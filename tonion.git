@@ -89,13 +89,15 @@ elif [ ! -f /etc/init.d/tonion ] && command -v rc-service >/dev/null 2>&1; then
       touch /etc/init.d/tonion
       cat << 'EOT' > /etc/init.d/tonion
       #!/sbin/openrc-run
-      name=tonion start service
-      command="tonion"
-      command_args="start"
-      command_background=true
-      pidfile="/run/${RC_SVCNAME}.pid"
+      description=Tonion Start Service
+      start(){
+         ebegin "Starting Tonion service"
+         tonion start
+         eend $?
+      }
+
       depend() {
-         need net
+         before net
       }
 EOT
       chmod +x /etc/init.d/tonion
